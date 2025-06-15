@@ -1,0 +1,43 @@
+pipeline {
+    agent {
+        label 'slave2'
+    }
+
+    stages {
+        stage('Git Checkout- Cloning Code from GitHub') {
+            steps {
+                git 'https://github.com/KastroVKiran/Hotstar-App.git'
+            }
+        }
+        stage('Code Compilation') {
+            steps {
+                sh 'mvn compile'
+            }
+        }
+        stage('Testing Code') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('Building MVN Code') {
+            steps {
+                sh 'mvn package'
+            }
+        }
+        stage('Deploying package to Tomcat') {
+            steps {
+                deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'Tomcat-Creds', path: '', url: 'http://3.111.58.75:8080/')], contextPath: 'Deploy-Hotstar_Master_Slave_Architechture', war: '**/*.war'
+            }
+        }
+        stage('Archive Artifact') {
+            steps {
+                archiveArtifacts artifacts: 'target/myapp.war'
+            }
+        }
+        stage('Publishing Artifact') {
+            steps {
+                s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 's3-artifact-archivalstorage/', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: false, selectedRegion: 'ap-south-1', showDirectlyInBrowser: false, sourceFile: '**/*.war', storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 's3-artifact-archivalstorage', userMetadata: []
+            }
+        }
+    }
+}
