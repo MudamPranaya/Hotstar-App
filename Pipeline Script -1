@@ -1,0 +1,45 @@
+pipeline {
+    agent {
+        label 'slave2'
+    }
+
+    stages {
+        stage('Git Checkout- Cloning Code from GitHub') {
+            steps {
+                git 'https://github.com/KastroVKiran/Hotstar-App.git'
+            }
+        }
+        stage('Code Compilation') {
+            steps {
+                sh 'mvn compile'
+            }
+        }
+        stage('Testing Code') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('Building MVN Code') {
+            steps {
+                sh 'mvn package'
+            }
+        }
+        stage('Deploying package to Tomcat') {
+            steps {
+                deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'Tomcat-Creds', path: '', url: 'http://3.111.58.75:8080/')], contextPath: 'Deploy-Hotstar_Master_Slave_Architechture', war: '**/*.war'
+            }
+        }
+        stage('Archive Artifact') {
+            steps {
+                archiveArtifacts artifacts: 'target/myapp.war'
+            }
+        }
+        stage('Upload WAR to S3') {
+            steps {
+                withAWS(region: 'ap-south-1', credentials: 'S3-creds') {
+            sh 'aws s3 cp target/myapp.war s3://s3-artifact-archivalstorage/HotstarApp.war'
+            }
+        }
+    }
+ }
+}
