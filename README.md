@@ -4,6 +4,17 @@ This project sets up a full CI/CD pipeline for a Java-based Hotstar App using Je
 
 ---
 
+🔧 CI/CD Project Summary: Hotstar Web App Deployment with Jenkins Master-Slave Architecture
+🛠️ Infrastructure Setup
+You have configured a robust and production-grade Jenkins pipeline architecture using multiple virtual machines:
+
+# 🖥️ Virtual Machines
+1 Jenkins Master Node
+
+2 Jenkins Slave Nodes (slave1, slave2)
+
+1 Tomcat Web Server Node
+
 ## 🧰 Tech Stack
 
 - **Jenkins** (Master + Slave Node)
@@ -14,6 +25,13 @@ This project sets up a full CI/CD pipeline for a Java-based Hotstar App using Je
 - **AWS CLI** – For interacting with S3 from pipeline
 
 ---
+✅ VM Configuration
+| Node          | Installed Tools                                             |
+| ------------- | ----------------------------------------------------------- |
+| **Master**    | Git, Java, Maven, Jenkins (configured on port 8080)         |
+| **Slaves**    | Git, Java, Maven, AWS CLI (configured with IAM access keys) |
+| **Tomcat VM** | Java, Apache Tomcat Server (configured on port 8080)        |
+
 
 ## ⚙️ Pipeline Stages
 
@@ -31,7 +49,7 @@ This project sets up a full CI/CD pipeline for a Java-based Hotstar App using Je
 
 5. **Deployment to Tomcat**
    - Uses Jenkins "Deploy to Container" plugin.
-   - Target: `http://3.111.58.75:8080/`
+   - Target: `http://<Public_IP>:8080/`
    - Uses Jenkins credentials: `Tomcat-Creds`
 
 6. **Artifact Archival**
@@ -45,48 +63,38 @@ This project sets up a full CI/CD pipeline for a Java-based Hotstar App using Je
 
 ---
 
-## 🔧 Tools Installed on Jenkins Master/Slave Nodes & Tomcat Nodes
+## 🔐 Jenkins Credentials Configuration
+Set up via Jenkins → Manage Credentials → (Global scope):
 
-### Master Node:
-- Jenkins Core
-- Git
-- Java
+| ID             | Type                       | Usage                         |
+| -------------- | -------------------------- | ----------------------------- |
+| `Tomcat-Creds` | Username + Password        | Tomcat Manager App Deployment |
+| `S3-creds`     | AWS Credentials            | Upload WAR file to S3 bucket  |
+| `slave creds`  | SSH Username + Private Key | SSH access for Jenkins agents |
 
-### Slave Node (`slave1` and `slave2`):
-- Java
-- Git
-- Maven
-- AWS CLI
-  
-### Tomcat Server :
-- Java
-- Tomcat
 ---
+## 🔌 Jenkins Plugins Used
+Installed via Manage Jenkins → Plugins:
 
-## 🔐 Jenkins Credentials
-
-| ID            | Type            | Usage                     |
-|---------------|------------------|----------------------------|
-| `Tomcat-Creds`| Username/Password | Deploy to Tomcat          |
-| `S3-creds`    | AWS Access Keys  | Upload to S3 via AWS CLI  |
+| Plugin Name          | Purpose                                             |
+| -------------------- | --------------------------------------------------- |
+| AWS Steps            | For uploading artifacts to S3 from Jenkins pipeline |
+| Deploy to Container  | For WAR deployment directly to Tomcat server        |
+| AWS S3 Publisher     | Optional for publishing artifacts to S3             |
+| Pipeline: Stage View | UI enhancement to visually track pipeline stages    |
 
 ---
 
-## ✅ Plugins Required in Jenkins
+##  🔗 Jenkins Nodes Configuration
+Connected slave1 and slave2 via SSH using private key credentials
 
-- Git Plugin
-- Maven Integration Plugin
-- Pipeline Plugin
-- Deploy to Container Plugin
-- AWS CLI Plugin
-- Credentials Plugin - AWS Steps
+Configured labels (slave1, slave2) for distributed pipeline execution
 
----
+Slave2 is specifically used for executing this pipeline ( Note: you can change it to any --> Jenkins will decide )
 
 ## 🙌 Special Thanks
 
 Big thanks to **Kastro** for guidance and insights throughout this CI/CD journey.  
-Also grateful to **AWS EC2** for providing the scalable infrastructure.
 
 ---
 
