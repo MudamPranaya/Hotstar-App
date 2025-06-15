@@ -85,12 +85,19 @@ Installed via Manage Jenkins → Plugins:
 
 ---
 
+
 ##  🔗 Jenkins Nodes Configuration
 Connected slave1 and slave2 via SSH using private key credentials
 
 Configured labels (slave1, slave2) for distributed pipeline execution
 
 Slave2 is specifically used for executing this pipeline ( Note: you can change it to any --> Jenkins will decide )
+
+
+## Script
+I've written Pipeline Script-1 for this project - Click on this link or Navigate to "Pipeline Script -1" file
+https://github.com/vaaisshnnu/Hotstar-App/blob/4f325663c40175e8b6e54782c4c7a5d679a0ccda/Pipeline%20Script%20-1
+
 
 ## 🙌 Special Thanks
 
