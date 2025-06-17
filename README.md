@@ -121,6 +121,6 @@ Big thanks to **Kastro** for guidance and insights throughout this CI/CD journey
 **Ganga Vaishnu Reddy**  
 DevOps Enthusiast | Cloud Learner | Always Building 🚀
 
-Interested in my work - Let's Connect on [Linked IN]([https://www.linkedin.com/in/vaaisshnnu-reddy/]
+Interested in my work - Let's Connect on [LinkedIN](https://www.linkedin.com/in/vaaisshnnu-reddy/)
 
 🌟 this if you like this, Thank you 😊
